@@ -1,0 +1,454 @@
+\chapter{Investigations and possible Explanations for the Behavior of the Curve}
+
+In this section we will investigate the shape of the curve and take a closer look at some possible explanations for the double-decent-curve. Particular emphasis will be placed on how strongly overparameterized networks behave compared to weakly overparameterized networks. Thus, conclusions can be drawn regarding the better generalization of the large networks.
+
+\begin{figure}[!htp]
+\centering
+\includegraphics[scale=0.35]{Abschlussarbeit_2021/LaTeX/images/regimes_described.png}
+\caption{shape of the double descent risk curve and it's designations based on the observation made in Chapter \ref{experimental_part}. The designations were made by \cite{belkin}. }
+\label{double_descent_muster}
+\end{figure}
+
+To explain the phenomenon, we divide our risk curve into two regimes and try to find explanations for each regime. The first Regime is the under-parameterized regime, also called the classical-regime \cite{belkin} and the second regime is the over-parameterized regime, the modern-regime \cite{belkin}.\\
+The behavior of the curve in the first regime is already well known and has also been well researched. The explanation of the shape is based on the bias-variance trade-off \cite{belkin}. We will mention this briefly in the next subsection, also because this is well known theory.\\
+In the following subsection we will deal with the modern regime, i.e. the overparameterized regime. As we have already noted in the previous chapter, these two curves are separated by a peak, also called the interpolation-threshold. This is reached when the model is rich enough to perfectly memorize the training data i.e. the training error is zero. The behavior of the double-decent-risk-curve is easier to explain if we consider these two regimes separately and then put the findings together. As announced in the introduction, the second regime is not so well researched yet. Therefore, a clear and unambiguous explanation cannot yet be given. Nevertheless, in the section \ref{possible_explanations} possible reasons are mentioned, which might contribute to the behavior of the curve.  
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%5
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newpage
+\section{Under-parameterized Regime}
+\label{under_para}
+
+In this chapter, the under-parameterized regime will be discussed. The analysis is more concise than that for the overparameterized regime. This is due to the fact that the behavior of the double descent curve is not as surprising as in the overparameterized regime and also follows well known statistical theories. A fundamental principle for the explanation of the behavior is provided by the bias variance decomposition \cite{belkin}, which will be explained in the following section.  
+
+\subsection{The bias variance decomposition}
+\label{bias_variance_chapter}
+
+The bias-variance trade-off is responsible for the shape of the first curve. As already indicated in figure \ref{double_descent_muster}, there is a so-called sweet-spot, which balances bias and variance in such a way that the best possible performance of the model is achieved\footnote{If we only consider the classical regime}. Left of the sweet-spot, we talk about under fitting and to the right we talk about overfittig.\\
+But first, we introduce the terms bias and variance. Let $(X^{*},Y^*) \subset X \times Y$ be a data set, $(X^{*},Y^*)  = \{(x_1,y_1),(x_2,y_2),\cdots (x_n,y_n)\}$. We want to find a mapping from $X$ to $Y$ via a Model. Let the real mapping be,
+$$
+y = f(x) + \epsilon \text{ with } y \in Y \text{ and } x \in X
+$$
+Where $\epsilon$ is an error, which arises because of noisiness for example in terms of measurement. The error is distributed around $0$ with a variance of $\sigma^2$. Assume our model, trained on $(X^{*},Y^*)$ finds a function $f^{*}(x): X \rightarrow Y$ so the expected error of our model is given by,
+$$
+Bias(f^*(x)) = E[f^{*}(x)] - f(x)
+$$
+This error is called the bias. $E[(f^{*}(x)]$ is the expected output given a random subset $(X^{*},Y^*) \subset X \times Y$.  So simply put, the bias is the expected difference between the predicted value and the real value. A high bias for example could occur, if we made a prediction whether a student will pass the exam only based on one feature in a given data set. The prediction based on only one feature could be quite inaccurate. The feature could be the amount of hours a student has studied.\\
+The variance is given by,
+$$
+Var(f^*(x)) = E[(f^{*}(x) - E[f^{*}(x)])^{2}]
+$$
+ If the variance is high, the result of the model varies strongly depending on the selected training set or in many models also by the initial weights. This can happen quickly, for example, if a prediction takes into account features that are not meaningful. For example that the probability of passing the exam now somehow depends on the color of the hair. Because the given data set tricked the model into thinking that. Adding more and more features does make it easier to better predict the given training data. For unseen data points, however, this can be a hindrance, as patterns may have been seen in the training set that do not work for unseen data.
+
+\begin{figure}[!htp]
+\centering
+\includegraphics[scale=0.3]{Abschlussarbeit_2021/LaTeX/images/balances_function.PNG}
+\caption{In the left graph we see two learned functions. The high bias function (blue) captures the training set inaccurately but is unlikely to change with in a new training process. For the high variance prediction, it is the other way around. On the right is a function that has a good trade off in terms of bias and variance. This prediction handles the noise very well and is also consistent with other training sets. }
+\label{bias_variance}
+\end{figure}
+
+ We can generally say that if we have noise in the training set, which is usually the case, and the model tries to learn the training set perfectly, the noise is also learned and a high variance arises. This is classical overfitting.\\
+Figure \ref{bias_variance} gives general idea of  the bias and variance trade-off. But how are bias and variance related? It can be assumed that if the lowest possible bias is desired, the variance becomes large and vice versa. For example, if a prediction of passing the exam is made based only on the number of hours studied, this prediction will not vary much with different training sets. The variance is therefore small. However, it will not be really accurate, because other attributes should be taken into account as well. Like for example the grades in other subjects. But if, on the other hand, we include many attributes into our decision, the prediction for an unseen data point will vary, as its decision depends on many features whose values themselves also vary. The variance becomes large, but the prediction of the model becomes more accurate averaged over all possible training-sets. However, a high variance can be bad for a prediction of unseen data. Therefore we have to find a trade-off. We try to represent this dependence mathematically. For this purpose the expected squared error\footnote{This is the loss function MSE (\ref{mse_eq})} of the model is considered, which normally should be minimized. 
+$$
+E[(y - f^*(x))^2] = E[y^2 + f^*(x)^2 - 2yf^*(x)] = E[y^2] + E[f^*(x)^2] - E[2yf^*(x)]
+$$
+We know that $E[X^2] = Var[X] + E[X]^2$ holds\footnote{This follows out of the definition of the Variance. For the proof see Appendix \ref{bv_help_eq}} so we can transform the Equation to, %%prove in appendix
+$$
+E[(y - f^*(x))^2] = Var[y] + E[y]^2 + Var(f^*(x)) + E[f^*(x)]^2 - E[2yf^*(x)]
+$$
+It holds that $E[y] = E[f(x) + \epsilon] = E[f(x)] + 0 = f(x)$. Because the noise is distributed around $0$. We can again rearrange the equation to,
+
+\[ E[(y - f^*(x))^2] = Var[y] + Var(f^*(x)) + (f - E[f^*(x)])^2 \] 
+\[\Longleftrightarrow E[(y - f^*(x))^2] = Var[y] + Var(f^*(x)) +  E[f -f^*(x)]^2 \]
+Substituting the definition of bias and knowing that y has a noise that cannot be removed, we get,
+\begin{equation}
+    E[(y - f^*(x))^2] =\sigma^2 + Var(f^*(x)) + Bias(f^*(x))^2
+    \label{bias_variance_eq}
+\end{equation}
+
+
+So now we have the relationship between the squared error, the variance and the bias, where $ \sigma$ is the variance of the value to be determined, an error which will always remain there. If we want to minimize the sqared-error $E[(y - f^*(x))^2]$, we have to find a balance between variance and bias. 
+As already mentioned, the bias is low and the variance is high at high model complexity. Likewise, the bias is high and the variance is small at low model complexity \cite{wikipedia_bias_variance}. Adding the squared bias and the variance together, we get the curve of the first regime. The resulting Graph can be seen in figure \ref{fig:bv_decomposition}. This also explains many observations we have discovered in the previous chapter, in our experimental part.  \\
+In the next section we will deal with the other regime. This starts directly after the interpolation threshold. Here, one should note with respect to the bias that it remains very small from here on \cite{pmlr-v119-d-ascoli20a}. With respect to the variance, one should ask what happens to it when we are in the over-parameterized region.
+
+
+\begin{figure}[!htp]
+\centering
+\includegraphics[scale=0.35]{Abschlussarbeit_2021/LaTeX/images/integral_bias_variance.drawio.png}
+\caption{Resulting error curve. Finding the sweet-spot such that\\
+$E[(y - f^*(x))^2]  = \sigma^2 + Var(f^*(x)) + Bias(f^*(x))^2$ is minimal.}
+\label{fig:bv_decomposition}
+\end{figure}
+
+It is important to note that our presented decomposition of bias and variance was derived using the loss function "mean squared error" \ref{mse_eq}. However, the networks from chapter \ref{experimental_part} mostly use the loss function "sparce cross entropy" \ref{scc_eq}. A decomposition here is also possible here \cite{bias_variance_op}. This can be derived with the help of the Decomposition for Bregman Divergences. This can be seen in \cite{Bergman}.
+
+
+%Hier noch einfügung, was man beobachtet hat und erklaren kann
+%Abschlusssatz bezüglich varianz im anderen regime
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%                                   %%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newpage
+
+\section{Over-parameterized Regime} %rename maby
+\label{over-p-regime}
+Now there is only an explanation of the behavior after the first 'U' of the curve missing.
+It was observed that models perform better and better from now on. From here on, the more parameters a model has, the better the model performs. In this chapter ideas or reasons shall be presented, why the curve decreases monotonously after the interpolation-threshold with increasing number of parameters. Particular emphasis will be placed on how strongly overparameterized networks behave compared to weakly overparameterized networks. Therefore the behavior of networks in the overparameterized regime depending on their size will be further investigated. Thus, conclusions can be drawn regarding the better generalization of large networks. At the end of the chapter, possible explanations for the second decrease of the curve are discussed.\\
+An exact mathematical proof as in the underparameterized regime is not given here, as this behavior is still not sufficiently researched. However, a few heuristic explanations or ideas shall be presented.
+
+\subsection{Experiments with random fourier features}
+\label{RFF}
+In order to get a feeling for the behavior of increasingly overparameterized networks, in the following section we will present three experiments in which different highly overparameterized networks are asked to solve simple problems. As shown in \ref{double_descent_vanilla}, the training loss for overparameterized networks is zero, which is why all training data is learned by heart.\\
+For the experiments we resort to a famous class of non-linear parametric models, the Random Fourier Features (RFFs). RFFs can be viewed as a class of two-layer neural networks, where the first layer has random but fixed weights \cite{belkin}. The Model has to optimize the function 
+$$
+h(x) = \sum_{i = 1}^{N} a_{i}\phi(x,v_i)  \text{ where } \phi(x,v) := e^{i \langle x,v \rangle}
+$$
+the vectors $v_1,v_2, \cdots v_N$ are sampled independently from a normal distribution. \\
+The first experiment is designed to solve a regression problem.
+For the experiment, we create three different models, each with a different number of features. The first model has $N = 11$ features, the second model has $N = 30$ features and the 3rd model has $N = 50$ features.  \\
+Our data set consists of 10 points $\{(x_0,y_0),(x_1,y_1),\codts ,(x_9,y_9)\} \in \mathbb{R}^2$.Where $y_{i}$ is the label of $x_i$. These 10 points represent a regression problem, which the models should solve. The 10 points are not chosen completely random. The $x$-values are fixed with $x_i = i+1$. The $y$-values $Y$ are normally distributed $Y \sim \mathcal{N}(\mu,\,\sigma^{2})$ with the parameters $\mu = a\cdot x_i +c$ and $\sigma = 1$. \\
+We can see the deviation of $y_i$ as noise, because in the mean $y_i = a\cdot x + c$ holds. So we can easily say that the perfect function $f$ for predicting test data is $f(x) = a\cdot x + c$, since it would have the least deviation on infinitely many test data. So we can call $f^*(x) =a\cdot x + c$  the true function\footnote{for the prove see Appendix \ref{proof_for_1d_rff}}. \\
+In our experiment all three models are rich enough to predict the data points exactly. This means that the learned function from the models will intersect all training points. We have a training accuracy of 100\% in all cases. We are therefore behind the interpolation threshold. The question now is which of the three models is closest to the true linear function $f^*$.\\
+After performing the experiment, we can observe that the function learned from the model with many features is significantly smoother and has fewer deviations from the perfect function $f^*$. A more elegant and simpler regression function was found, which under the constraint to hit all training points. Of course, even if all the test points are passed, we can still say that the function with $N = 50$ features is not a bad function in terms of predicting test data.
+The learned function from the model with only $N = 11$ random fourier features, on the other hand, is very poor and has large distance to the true function $f^*$. The regression problem is therefore solved very badly here. \\
+ It can therefore be observe again that in the modern regime more is better. Repeating the experiment several times, the finding remains the same. The different learned functions can be observed in figure \ref{fig:1d_rff}. \\
+
+\begin{figure}[!htp]
+\centering
+\includegraphics[scale=0.3]{Abschlussarbeit_2021/LaTeX/images/RFF_1d.png}
+\caption{Three different solutions of a regression problem. The first function was predicted by a model with $N = 11$ RFFs, the second function by a model with $N = 30$ features and the third function by a model with $N = 50$ features. The linear function where the labels are sampled around is $f^*(x) = x$ }
+\label{fig:1d_rff}
+\end{figure}
+
+\newpage
+
+Two more examples which have a similar effect shall be presented.
+The example from above has only shown a learned function from 
+$\mathbb{R} \rightarrow \mathbb{R}$. But how does it look now, if a function maps from $\mathbb{R}^2 \rightarrow \mathbb{R}$? So we need three dimensions to represent the function. Can we observe a similar effect here?\\
+To find out, a scenario similar to the one above was created. Again, a function is to be learned. this time it is the x-y plane so $f(x,y) = 0$.
+The training-set consisted of 100 points, where the set of points is given by $A\times B$, where $A$ and $B$ are sets of 10 points, which lie between $-10$ and $10$ and all have the same distance to each other. Again the label has a little bit of noise to it. Each data point is normally distributed around the value $\mu = 0$ with a variance of $\sigma = 1$.\\
+For this experiment, two RFF models were trained. One of them with $N = 120$ features, the other one with $N =10000$. Both again rich enough to interpolate all data points exactly.
+
+\begin{figure}[!htp]
+\centering
+\begin{subfigure}{}
+  \centering
+  \includegraphics[width=.49\linewidth]{Abschlussarbeit_2021/LaTeX/images/120_RFF_3d.png}
+  \label{fig:sub1}
+\end{subfigure}%
+\begin{subfigure}{}
+  \centering
+  \includegraphics[width=.49\linewidth]{Abschlussarbeit_2021/LaTeX/images/10000_RFF_3d.png}
+  \label{fig:sub2}
+\label{fig:high_varianz_with_noise}  
+\end{subfigure}
+\caption{The left plot shows a function learned from a model with $N = 120$ random fourier features. The right plot shows the function learned by a model with $N = 10000$ features. The red points are the data-points.}
+\label{3d_RFF}
+\end{figure}
+
+
+We also make the same observation in the multidimensional. The model with the larger number of parameters performs better again. For the same reason as in one dimensional case. The learned function is softer and has not so high peaks, which deviate from the plane $f(x,y) = 0$. Again, repeating the experiment does not provide different results. It is also interesting to note that if a larger grid is to be predicted with $A\times B = [-20,20]\times [-20,20]$, the extrapolation of these points is also significantly better for large models. This can be observed in the Appendix \ref{extrapolation}.
+
+So far we have seen the effect in regression models. But how does it look now in the case of classification? \\
+For this reason, a simple decision problem was constructed. On a grid with $20 \times 20$ points, the data is divided into two classes, $red$ and $blue$. The Probability, that a point $(x,y)$ where $(x,y) \in [-50,50] \times [-50,50]$ gets assigned to the red class, is given by
+$$
+P(red| x,y) = 1 - P(blue| x,y) = \begin{cases}
+1 - \frac{1}{(2+ \frac{2}{5}|x|)} & \text{if } x < 0\\
+\frac{1}{(2+ \frac{2}{5}|x|)} & \text{if } x \geq 0 \\
+\end{cases}\\
+$$
+All points have the same distance to each other. The data-points $(x,y)$ where $x \geq 0$ and $x$ gets assigned to $blue$. Can be interpreted as noise. We note that a simple separation in the form of a line would be very efficient here. The vector $w = (0,1)$ would be a very good choice, and would perform well, even best possible, on this classification problem. \\
+Again, we train two models. Both are rich enough to learn all training data perfectly. So we are again to the right of the threshold. Our supposedly weak model has $N = 300$ RFFs, whereas the strong model has $N = 20000$ features.
+We see very clearly in this experiment that, again, the richer model solves the task better. In this case even clearly better, because we see that the model with $N = 300$ features will perform very poorly on new test data. 
+The model with $N = 20000$ features, on the other hand, can be expected to have a solid performance with new data. We also make two other interesting observations. First, the decision surface of the model with fewer features is much finer and consists of many small spots, whereas the decision surface of the model with $N = 20000$ features consists of large areas. The rich model therefore is much more confident about its decisions. Here there are hardly any white areas. With the help of the much more complex model a much simpler function was found. \\
+
+\newpage
+
+\begin{figure}[!htp]
+\centering
+\begin{subfigure}{}
+  \centering
+  \includegraphics[width=.42\linewidth]{Abschlussarbeit_2021/LaTeX/images/Decision_Surface_less_features.png}
+  \label{fig:sub1}
+\end{subfigure}%
+\begin{subfigure}{}
+  \centering
+  \includegraphics[width=.42\linewidth]{Abschlussarbeit_2021/LaTeX/images/Decision_Surface_many_features.png}
+  \label{fig:sub2}
+\end{subfigure}
+\caption{On the left is a decision surface from a model that has $N = 300$ RFFs. The right image shows a decision surface created by a model with $N = 20000$ features. A new point on the grid would be classified according to the color of the decision surface. The intensity of the color indicates how sure the model is. For a point $(x,y)$ in a white surface $P(blue|x,y) = P(red|x,y) = 0.5$ would apply.}
+\label{decision_RFF}
+\end{figure}
+
+We can now summarize what was observed. The more features the Models have, or the more neurons the Models have, the smother the learned function of the model. So it is easier for the network to find a suitable approximation of the real function of the problem. The more complex our model is, the simpler and more elegant the solutions we find. One could also say that the network focuses not only on learning the training data perfectly, but also on recognizing patterns in the data set itself. With increasing number of parameters the model gets a kind of feeling for the shape of the data. In the literature this effect is called inductive bias \cite{wikipedia_inductiv_bias}.
+It also stands to reason that the variance between learned functions described in \ref{bias_variance} is smaller for larger networks. This is because as the number of parameters increases, the functions get closer and closer to the "true function" $f^*(x)$. 
+
+\newpage
+
+\subsection{Other interesting discoveries}
+
+Apart from the function resulting after the training, other interesting observations can be made. In this subsection, the weights of the networks will be examined in more detail. How do the individual weights change when a significantly larger number of parameters is present?\\
+Subsequently, the bias and the variance will be discussed again. How do these two factors behave in the overparameterized range? After all, the equation \ref{bias_variance_eq} established in the last section must still hold regardless of the model size.\\
+%%maby delet it and mention it in the explanation
+In this subsection an experiment on found minima depending on the initialization of the weights should also be done. Here observations can be made, what initialization of weights can have for an influence on the learned function.\\
+At the end, the shape of the loss function is to be examined. Here we will not go too much into details. But there is no doubt that found minima depend strongly on the behavior of the loss function. What happens if the loss landscape, i.e. the graph of the loss function, is smoothed? 
+
+
+
+\subsubsection{Training steps and weight change in the overparameterized regime}
+
+When training the models in Chapter \ref{experimental_part}, it was noticed that a minimum is found much faster with large models.  This is because the model does not need so many adjustments to the weights until a suitable minimum is found. A plausible assumption would be that weights do not take on values that are too extreme, since a minimum can be found for rich models even without changing the weights too much. \\
+So, can we possibly establish a connection in the overparameterized regime between the generalization of the model and the number of epochs needed to reach zero training error? For this purpose, we perform another experiment. In this experiment we want to investigate how many epochs are needed to reach $0.01$ training loss depending on the network size. We also consider the average change of a weight in the network graph. So the average difference between the initialization and the value of the weight after training. \\
+For the experiment, we use a fully connected neural network\footnote{similar to \ref{model equation}} with a hidden layer consisting of $1 \leq H \leq 80$ neurons. We are  training on a Subset of MNIST with $15000$ Samples. Stochastic gradient descent is used with a learning rate of $\eta = 0.1$.
+The Training stops if a training loss below $0.01$ is reached or 200 epochs where processed. To reduce the number of factors observed, the biases are fixed to the value $0$ and thus cannot be learned.The initial weights $W$, on the other hand, are normally distributed with
+$$
+W \sim \mathcal{N}(0,\,0.05)
+$$
+It can be observed that a high correlation exists between the test lost, the number of epochs required and the average weight change. This can be seen in figure \ref{avg_weightchange}. Since the experiment here was performed only once and thus fluctuations in the test loss were not straightened out, it can be observed that even fluctuations in the number of epochs required have an influence on the test loss. It is quite clear here that after the interpolation threshold ($H = 11$) test loss, the number of epochs and the average weight change decrease monotonically.  \\
+The fact that for larger models the average weight change is small, is very interesting. It shows that the model can find a minimum by a few simple weight adjustments, if it has enough capacity. \\
+In figure \ref{density_weights} density functions for the initial weights, the weights after the training process and the density function of the weight change are shown.
+A total of four different complex models with $H \in \{11,20,100,1000\}$ have been investigated. All four models are in the overparameterized region, as figure \ref{avg_weightchange} shows. On the left side of the figure it can be observed that the variance of the learned weights becomes smaller and smaller for larger models.
+The density function for the weights after training becomes smoother and smoother for large $H$. This observation can be explained by the behavior of the Gradient Descent algorithm. With a high number of parameters, the loss function depends on significantly more parameters. An activation of a neuron can thus be forced by many small changes, since the dendritic potential is composed of significantly more weights. \\
+On the right side of \ref{density_weights} it can be observed that the amount of weights, which were strongly adjusted during the learning process, strongly decrease with the size of the model. In addition, the density function becomes more and more compressed towards zero as $H$ becomes larger. \\
+Thus, large networks have the advantage that SGD finds a minimum here, which can be realized only by small adjustments of the weights. This might prevent large variances in the learned weights. A possible conclusion would be that minima varying significantly in performance are found depending on the initialization, as individual weights are changed more. We explore this assumption a bit more in the next section \ref{possible_explanations}. It should also be noted that with a higher number of parameters, more minima with zero training loss can be found. This also influences the convergence of SGD.  
+\\
+
+
+
+%%TODO: Bild von bsp verteilung in Anhang
+
+
+%%%%%%%
+%%wirte about weightclustering here and mention the unsufficiant exploration RESTRUCTURE!!!!
+%%%%%%%
+
+
+
+\begin{figure}[!htp]
+\centering
+\includegraphics[scale=0.3]{Abschlussarbeit_2021/LaTeX/images/epochs_needed_15k.png}
+\caption{The upper half shows the number of epochs needed for a train loss of $0.01$ (blue bars). The black function describes the test loss. Double descent is clearly visible. \\
+In the lower half you can see the average change of a weight.  Here the bar is blue again, after the interpolation threshold has been passed.}
+\label{avg_weightchange}
+\end{figure}
+%todo: find a good description (something about correlation)
+%%model is simpler, SGD finds minima more easily
+
+
+\begin{figure}[!htp]
+\centering
+\includegraphics[scale=0.3]{Abschlussarbeit_2021/LaTeX/images/Weightdist_15k_sns.png.png}
+\caption{On the left side you can see the density function of the weight values in the network. Blue shows the weights before training and orange shows the weights after training. \\
+On the right side is shown the density function of the weight change.  }
+\label{density_weights}
+\end{figure}
+
+\newpage
+
+
+\subsubsection{Bias and variance in the overparameterized regime}
+
+In chapter \ref{bias_variance}, we discussed bias and variance in the underparameterized regime. But what happens to bias and variance in the overparameterized regime? Regardless of the size of the network, equation \ref{bias_variance_eq} must still hold \cite{bias_variance_op}. 
+The squared error is still dependent on bias and variance. Since we always interpolate the data perfectly in the overparameterized domain, for a learned function $f^*(x)$ trained with data from the real function $f(x)$ , it holds that 
+$$
+Bias(f^*(x)) = E[f^*(x)] - f(x) < \epsilon  \text{  }  \forall x \in X, \epsilon > 0
+$$
+So a consistently low bias and a decreasing test loss with the increase of $H$ must ensure that the variance of $f^*(x)$ must decrease. \\
+Figure \ref{varianz_mnsit} gives evidence for this experimentally. Here the distribution of the test-loss and the test accuracy of two different models $M_{H = 12}$ and $M_{H = 300}$ with the architecture of equation \ref{model equation}, trained to zero training error can be seen. Both are in the overparameterized regime. However, $M_{H = 12}$ is just past the interpolation threshold. The learned functions of $M_{H=12}$ vary significantly more in their performance on the test data set. In contrast, the variance of the performance of $M_{H=300}$ is very small. The varying performance is strongly related to the varying of learned functions. It can be assumed that the following inequality applies.
+$$
+Var[f^{(300)}(x)] < Var[f^{(12)}(x)]
+$$
+Where $f^{(k)}$ is the learned function of a model with $H = k$ neurons in the hidden layer. \\
+Similar observation is made in \cite{pmlr-v119-d-ascoli20a} and \cite{bias_variance_op}. In \cite{pmlr-v119-d-ascoli20a} the variance is further subdivided into initialisation variance, noise variance and sample variance. It was shown with a Random Feature model\footnote{more information about the used architecture can be found in \cite{RF-model}} there that at the interpolation threshold, the inizialization variance and the noise variance peaks extremely at weak regulating \cite{pmlr-v119-d-ascoli20a}. If the weights are regulated more, the now somewhat weaker peak at the interpolation threshold is solely due to the initialization variance and the noise variance \cite{pmlr-v119-d-ascoli20a}. The decomposition can be also viewed in figure \ref{fig:varianz_ascoli}. \\
+The initialization of the weights can therefore play a large role. This can be also observed in more detailed example\footnote{The source is an article which shows that large variances in performance occur with few weights available. It also describes what influence the addition of more weights has \cite{double_descent_2021_splines}} in \cite{double_descent_2021_splines}. 
+Also the sampling variance peaks here. Depending on the training data, the learned function can vary very much. 
+Crucially, however, both of these variances decrease sharply after the interpolation threshold \cite{pmlr-v119-d-ascoli20a}. Thus, the model is more robust against varying initialization and against varying order of training data. The resulting total variance decreases as described above. In \ref{varianz_mnsit}, the same order of training data was always used, which makes the described sampling variance disappear. 
+This finding also fits well with the observations from section \ref{RFF}. A simpler smoother function cannot vary as much as a complicated function with strong peaks.
+
+\begin{figure}[!htp]
+\centering
+\includegraphics[scale=0.45]{Abschlussarbeit_2021/LaTeX/images/variances_ascoli.PNG}
+\caption{Plot from \cite{pmlr-v119-d-ascoli20a}. In the upper plot the model was only weakly regulated. In the lower plot, however, it was regulated more strongly. The ratio $\frac{P}{N}$ describes the number of features in relation to the size of the data set. If this term is 1, the data can be interpolated perfectly \cite{belkin}. The analysis was performed with an RF model, which was first presented in \cite{RF-model}}
+\label{fig:varianz_ascoli}
+\end{figure}
+
+
+\begin{figure}[!htp]
+\centering
+\includegraphics[scale=0.3]{Abschlussarbeit_2021/LaTeX/images/varianz_test.png}
+\caption{Variance of test loss (top) and variance of test accuracy (bottom) experimentally generated with the MNIST dataset. In blue a network of 12 neurons and in red a network of 300 neurons.
+In total, the networks were trained 200 times to obtain the data set.}
+\label{varianz_mnsit}
+\end{figure}
+
+\newpage
+
+
+
+
+
+
+\subsubsection{Exploration at inizialization and weight-clustering}
+\label{weight-cluster}
+
+Another interesting effect that can occur with weakly overparameterized networks is called "Insufficient Exploration" \cite{pmlr-v97-brutzkus19b}. \\
+ Depending on the initialization of the weights, it can happen that even if there are enough neurons so that training data should be learned perfectly, a local minimum is found by the optimization algorithm, which still leaves the network with a non zero training error. So at least a few weight are not converging to where it should for better performance during the training process. this is called insufficient exploration. The effect was shown in \cite{pmlr-v97-brutzkus19b}\\
+In \ref{fig:XOR-problem} this effect can be observed. In the Experiment a Model tries to learn the XOR-function. Here it can be seen that with few weight vectors an optimal minimum may not be found. With more weights it is much less likely that "Insufficient Exploration" occurs, because depending on the initialization of the weight vectors they converge to a certain cluster \cite{pmlr-v97-brutzkus19b}.Insufficient exploration can occur even with zero training loss \ref{fig:brutzkus19b}. Thus, the effect has a strong influence on overparameterized networks.
+
+\begin{figure}[!htp]
+\centering
+\includegraphics[scale=0.2]{Abschlussarbeit_2021/LaTeX/images/XORD.PNG}
+\caption{in $(a)$ and $(c)$ weight vectors before training are shown. in $(a)$ a total of $100$ weight vectors are used for training. in $(c)$ there are $2$ weight vectors, which would be sufficient for the problem with optimal weighting. The weight vectors after training can be seen in $(b)$ and $(d)$. At $(d)$ an under-exploration can be observed \cite{pmlr-v97-brutzkus19b}.}
+\label{fig:XOR-problem}
+\end{figure}
+
+
+
+
+Another interesting observation which also can be observed in \ref{fig:XOR-problem} is weight clustering. Weight clustering means that the weight vectors of a neural network form clusters during training. In the paper this was also empirically shown for larger Networks. Using the MNIST data set, it was shown that the channels of a convolutional network cluster \cite{pmlr-v97-brutzkus19b}. For this purpose a three layer network is constructed, which has as first layer a convolutional layer with $3 \times 3$ filters. The number of channels are changed in this layer. The second layer is a maxpooling layer and the third layer is a fully connected layer.\\
+In Figure \ref{fig:brutzkus19b} (a), it can be clearly observed that the training causes clusters to form and the weight vectors to move closer together. It is also shown that initializing small networks with clusters of trained larger networks results in significantly better performance and generalization than using random weights for initialization. This can be observed in Figure \ref{fig:brutzkus19b} (b). For the small network four channels were used (red and blue) for the large network (green) from which the initialization emerges, $120$ channels were used. 
+  
+
+
+
+\begin{figure}[!htp]
+\centering
+\includegraphics[scale=0.2]{Abschlussarbeit_2021/LaTeX/images/clustering.PNG}
+\caption{ Graphic from \cite{pmlr-v97-brutzkus19b}. 
+(a) Distribution of angle to closest center in trained and random networks. (b) The plot
+shows the test error of the small network ($4$ channels) with standard training (red), the small network that uses clusters from the large network (blue), and the large network ($120$ channels) with standard training (green)}
+\label{fig:brutzkus19b}
+\end{figure}
+
+
+
+
+
+\newpage
+\subsubsection{The impact of the loss landscape}
+
+In this section, the focus will be on the loss landscape. The local minimum found by the optimizer is strongly dependent on the shape of the loss landscape. A very hilly and uneven landscape could cause SGD to run into unfavorable minima during the training process.
+So it would be interesting to see what would happen if you artificially smoothed this loss landscape. Thus, SGD would no longer be in an unfavorable local minimum.  \\
+In order to test the influence of the loss landscape with different size networks, another experiment will be conducted. Here, the loss landscape of different sized networks as in \ref{model equation} $(1 \leq H \leq 60)$ is to be smoothed and then the performance evaluated. 
+To smoothen the loss landscape, the so-called SAM-optimizer\footnote{ For more information about the optimizer, see sharpness aware minimization for efficiently improving generalization \cite{sam_optimizer}
+} (sharpness aware minimizer) is used.
+
+
+
+\begin{figure}[!htp]
+\centering
+\includegraphics[scale=0.3]{Abschlussarbeit_2021/LaTeX/images/sam_edited.bmp.png}
+\caption{Test loss and average weight change as a function of network size. The SAM-optimizer was used for training\cite{sam_optimizer}. A smoothing factor of $\rho = 0.05$ was used. The data set is a subset of MNIST with $15000$ samples.}
+\label{fig:sam}
+\end{figure}
+
+In Figure \ref{fig:sam} the result of the experiment can be observed. Double Descent is still visible. However, it is interesting to note that above a certain network size $(H = 22)$ the minima found almost all provide for equally good performance. This is also the point from where the training accuracy is always above $0.99$. The addition of parameters does not provide a better generalization. So smoothing the loss-landscape can change the behavior of Double Descent in the overparameterized region. \\
+Increasing the smoothing factor $\rho$ provides for the blunting of the peak at the interpolation threshold\footnote{The word interpolation threshold might be a bit misleading here. Finally, it is clear from Figure \ref{fig:sam} that the training data is not yet perfectly interpolated, as not even a training accuracy of $99\%$ has been achieved. However, the $H$ at which the peak can be seen is the same as in \ref{avg_weightchange}, where the same data set was used only without smoothing. So the sample size is identical in both experiments. However, the smoothing also ensures that the minima found, which would previously have interpolated the data perfectly, is also smoothed and thus a regularization happens.}
+and earlier constant behavior of the test loss (in \ref{fig:sam} at $H=22$). This can be seen in the appendix \ref{sam_extension}. 
+
+
+
+
+\newpage
+\subsection{Possible explanations} 
+    \label{possible_explanations}
+    
+    
+The previous section has given a good overview of the behavior of overparameterized networks. In this subsection possible explanations for this phenomenon and assumptions for the occurrence will be given and linked to the findings from the observations of Chapter \ref{experimental_part} and Section \ref{over-p-regime}. The answer to the question why bigger and bigger networks perform better and better will be explored here. \\
+It must be clearly stated that the explanations are only conjectures supported by the observations made earlier. All explanations for the Slope of the double-descent risk curve after the interpolation threshold are only described here but not proven. This is merely a conjecture. For future work it would be interesting to go deeper into the matter and to do more research.  \\
+
+
+\subsubsection{Regularization in large networks}
+
+In Figure \ref{avg_weightchange} we have already shown empirically that the average weight change $\bar{w}$ decreases with higher model complexity. This is due to the fact that a large neural network with a large number of parameters makes it much easier to find a minimum that interpolates the training data. This can also be observed in Figure \ref{avg_weightchange}. One reason for this is that with a large number of parameters, significantly more minima can be found that perfectly interpolate the training data. A nice example can be found in \cite{double_descent_2021_splines}. \\
+For large networks, significantly fewer epochs are needed to find a suitable minimum. Accordingly, weights do not have to be adjusted too extremely. A more uniform weight adjustment would thus be possible. Also, of course, minor changes must be made to the individual weights to compensate for the error in the loss function. For example, for a typical optimization problem of a model with $m$ layers with $H$ neurons each and one output neuron using the mean squared error. Then the error function, which we want to minimize is given by,
+$$
+E(x) = (y^* - y)^2 = (y^* - \sum_{ i= 1}^{H} w_{i}^{(m)})^2
+$$
+Where $y^*$ is the true desired value and $y$ is the output of the model. It is easy to see that for large $H$ the single weight has less and less influence on the error. The weight adjustment after the backpropagation step is correspondingly lower. \\
+Thus, also the terms $\frac{1}{|W|}\sum_{w \in W} |w| $ and especially also $\frac{1}{|W|}\sum_{w \in W} \lVert w \rVert_2^2$ are significantly lower for large networks. The latter especially, since the weight distribution does not vary so much for large $H$. This was shown in Figure \ref{density_weights}. Often the terms just mentioned are intentionally kept small when training. This is called $L1$ or $L2$ regularization \cite{regularization_L1_L2}. 
+The error function $E^*(x)$ with regularization is then given by,
+    $$
+    \text{with $L1$ Regularization:  }  E^*(x) = E(x) + \lambda \sum_{w \in W} |w| 
+    $$
+    $$
+    \text{with $L2$ Regularization:  }  E^*(x) = E(x) + \lambda \sum_{w \in W} \lVert w \rVert_2^2
+    $$
+
+where $E(x)$ is the old error function without penalty term at the end, which is regulated by $\lambda$. To keep the error small here, the model tries to learn the training data and not to let the weights become too large. \\
+So it would be a plausible theory that the network size implicitly behaves as a regularizer \cite{A_least_squre_study}, which then would lead to a simpler and smoother output function as observed in chapter \ref{RFF}. This would also explain why the variance of the learned function decreases with large models. The implicit regularization would prevent too large fluctuations to occur. The same effect has $L1$ and $L2$ regularization in neural networks. They prevent overfitting \cite{regularization_L1_L2}, which occurs as in chapter \ref{bias_variance} described, with high variance of the learned function.\\
+\cite{l2_regularization_double_descent} shows empirically that using L2 regularization with a good choice of $\lambda$ as regularization factor the peak of the double descent curve disappears. Then there is a monotonic decay of the test loss. This supports the assumption that the shrinking variance in the weight distribution has an influence on the regularization and thus also on the generalization.
+%%%%%%%%%%%%%
+%%%%%%%%%%%%%
+%%%TOWRITE%%%%
+%%%%%%%%%%%%%
+%%%%%%%%%%%%%
+
+
+
+
+\subsubsection{Lottery ticket hypothesis}
+Another explanation, which could also be a possible explanation for the second decrease of the risk curve, is the so-called lottery ticket hypothesis \cite{understanding_double_ticket}.
+This hypothesis was first formulated in the paper by Frankle and Carbin \cite{lottery_ticket} and states the following: %%Quote%% 
+\\
+\begin{quote}
+A randomly-initialized, dense neural network contains a subnetwork that is initialized such that—when trained in isolation—it can match the test accuracy of the
+original network after training for at most the same number of iterations."\cite{lottery_ticket}
+\end{quote}
+
+A subnetwork here means a subgraph of the graph of the neural network. In other words, a subset of edges that are present in the neural network.  
+So if there are $n$ weights, there exist $2^n$ subgraphs, since $|\mathcal{P}(E(G))| = 2^{|E(G)|}$, Where $E(G)$ are the edges of the Graph of the Network. The number of subgraphs increases exponentially with the addition of neurons. In the paper, the possible existence of the hypothesis was shown empirically. \\
+First, a large network $N = (V,E)$ was trained. After the training process, a subnetwork
+$N^{'} =  (V^{'},E^{'})\subset N$ was selected, a so called winning ticket \cite{lottery_ticket}. When selecting the subnetwork, care was taken to ensure that it contained weights $E{'}$ that also underwent some change during the training process. \\
+After that $N$ was reinitialized and trained under two different circumstances. First all weights $E^* = E \setminus E^{'}, V^* = V \setminus V^{'}$ which are not contained in the subnetwork were reset to their original initialization. In the second training session all weights $E,V$ were randomly initialized again. It was found that the first variant found a minimum significantly faster, i.e. SGD converges significantly faster. And that the initialization with random new weights generalizes worse \cite{lottery_ticket}. \\
+Interestingly we have made the same observations in figure \ref{avg_weightchange}. regarding small and large networks. Larger models find a minimum faster  and generalize better than small models. So similar to the models with partially learned initial weights and random weights.\\
+An obvious hypothesis would be that large networks, which due to their large number of weights also contain significantly more subnetworks, have a higher probability of containing a so-called winning ticket. It is therefore more likely that SGD finds a fast minimum with the help of an already initialized subnetwork, which leads to a good generalization. \\
+Since the number of subnetworks increases exponentially, SGD would have significantly more choice. A large network has therefore bought more tickets for the lottery. Small networks, on the other hand, rely on good initialization. \\
+In figure \ref{density_weights}, it can also be observed from the density function of the weight changes (right) that more and more weights do not change at all or at least only a tiny amount with increasing model size as a result of the training process. This would argue for a focus on subnetworks. Just like the ever decreasing variance of the learned weights. This could speak for more and more favorable initialized subnetworks. Even if the lottery ticket hypothesis is only a hypothesis, the experiment conducted in the paper already provides insights into this possible explanation of double descent.
+It would be also interesting to link this hypothesis with the finding of weight clustering described in \ref{weight-cluster}. Again, a smaller network with learned weights from a much larger network could perform better.
+Even so, many points are unclear. How does SGD select these subnetworks?  And how do few weight changes succeed in taking profits from these subnetworks? What the reason for double descent, many questions which still need to be answered.
+
+
+
+\newpage
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+
+
+
+
+\section{Discussion}
+    \label{Discussion}
+
+In Chapter \ref{experimental_part} it was noticed that the height of the peak at the interpolation threshold which is to be found at the point where the model is able to interpolate the training data is strongly dependent on factors that lead to overfitting. This could be observed at high number of epochs, high amount of noise and high learning rate. (to be seen in figure \ref{fig:epochs_double_descent}, figure \ref{fig:Label_noise_on_double_descent} , figure \ref{fig:learning_rates_double_descent}). All three factors provide strongly different functions when the training data is to be interpolated. If the number of epochs is high or the learning rate is high, weights are changed more. So there may be high variances with respect to the functions learned. With high noise, noisy data points are also interpolated. The result is also overfitting. In the case of noise, this can also be observed in the overparameterized range (figure \ref{fig:Label_noise_on_double_descent}). Thus, we have a high variance. The resulting high peak is thus explained by the bias variance trade-off described in chapter \ref{bias_variance}. The behavior to the left of the interpolation threshold is therefore predictable and traceable, among other things with the worked out equation \ref{bias_variance_eq} concerning quadratic error, bias and variance. \\
+The situation is somewhat different on the right side of the interpolation threshold. From here on, the double descent curve decreases monotonously. Under certain conditions, a learned function can even perform better on a test data set than a learned function that does not interpolate the data. This can be observed in figure \ref{double_descent_vanilla}. However, this does not necessarily have to be the case (can be seen in figure \ref{fig:double_descent_wine}). \\
+An idea why the generalization curve decreases monotonously is given by the experiments with random fourier features in \ref{RFF}. Here it can be observed that models with more parameters learn simple and smoother functions (to be seen in figure \ref{fig:1d_rff}, figure \ref{3d_RFF}, figure \ref{decision_RFF}). So models with many parameters get a sense of the data. This is called inductive bias \cite{wikipedia_inductiv_bias}. This means the model gets better and better in generalizing the training data with increasing number of parameters.\\
+Further observations were then made on the behavior of overparameterized networks. It has been empirically shown that SGD with increased number of parameters finds a minimum that interpolates the training data much faster. This can be done by taking a look at the number of epochs needed (to be seen in figure \ref{avg_weightchange}). The average change of a weight is significantly lower for highly overparameterized networks (also to be seen in figure \ref{avg_weightchange}). It can therefore be assumed that a network with many parameters will find it much easier to interpolate the training data. Which is also an expected finding. Even if the loss-landscape was intentionally smoothed as in \ref{fig:sam}, a training accuracy of over 0.99 can still be achieved.\\
+It has also been shown empirically that the variance of between-learned functions decreases with increased number of parameters (seen in figure \ref{varianz_mnsit}). This can also be due to the fact that interpolating functions are found faster and thus not too large differences between learned functions can occur. We also have seen in chapter \ref{RFF} that learned functions become smoother under the constraint that they have to interpolate the training data points. This also causes a decrease of the variance (also to be seen in figure \ref{fig:1d_rff}, figure \ref{3d_RFF}, figure \ref{decision_RFF}). Equation \ref{bias_variance_eq}, which describes the relationship between generalization, bias, and variance, can also be used to explain the behavior in the overparameterized region. Since the bias is very small after the interpolation threshold, the variance must be monotonically decreasing in the overparameterized regime. This is confirmed by our observations. If there is a lot of noise in the data set, the variance falls off more slowly. see  figure \ref{fig:Label_noise_on_double_descent}. \\
+In section \ref{possible_explanations} possible explanations for the drop of the curve after the interplationthreshold were given.  The first section dealt with the self-regulating effect that neural networks develop when the number of parameters is large. This effect is strongly related to the decreasing variance and also ensures that networks develop an inductive bias for their training data. This in turn leads to better performance. A possible reason for this self-regulating effect could be the smaller change of the weights(see figure \ref{avg_weightchange}) with increased parametersize. Similar to $L1$-regularization or $L2$-regularization where a penalty term is used to ensure that weights do not become too large. \\
+As a second possible explanation, the "winning lottery ticket hypothesis" was listed. This states that during the training process subnetworks are selected which already show good convergence behavior with the initialization. Thus, simple and good minima can be found. This could be related to the found in figure \ref{avg_weightchange}. Larger networks find desired minima faster and easier. As the number of parameters increases, the number of existing subnetworks increases exponentially. So there is more choice during the training process. This also relates to the fact, that rich models will have a lot more possible minima which interpolate the training data. A connection can also be made to section \ref{weight-cluster}. Here it was also described that weight vectors cluster in the overparameterized section. If these clusters found by large networks are inizialized to smaller networks, very good performance can still be achieved.\\
+In general, it can be said that the behavior of the curve is comprehensible for both the underparameterized range and the overparameterized range.  Even if for the modern regime an exact and detailed explanation is still waiting. Now we can put together our two components, which we have worked out in this chapter, and get a deeper understanding of the double descent risk curve. 
+
+
+
+
+%TODO bring in the variance and discuss it. Link it to the RFF funktions
+%TODO sam optimizer 
+%Todo possible explanations 
+    
+    
+    
+    

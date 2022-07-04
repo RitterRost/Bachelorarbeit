@@ -1,0 +1,349 @@
+% Encoding: UTF-8
+@misc{belkin,
+  doi = {10.48550/ARXIV.1812.11118},
+  url = {https://arxiv.org/abs/1812.11118},
+  author = {Belkin, Mikhail and Hsu, Daniel and Ma, Siyuan and Mandal, Soumik},
+  keywords = {Machine Learning (stat.ML), Machine Learning (cs.LG), FOS: Computer and information sciences, FOS: Computer and information sciences},
+  title = {Reconciling modern machine learning practice and the bias-variance trade-off},
+  publisher = {arXiv},
+  year = {2018},
+  copyright = {arXiv.org perpetual, non-exclusive license}
+}
+
+@article{Nakkiran_2021_more_data_hurt,
+	url = {https://doi.org/10.1088/1742-5468/ac3a74},
+	year = 2021,
+	month = {dec},
+	publisher = {{IOP} Publishing},
+	volume = {2021},
+	number = {12},
+	pages = {124003},
+	author = {Preetum Nakkiran and Gal Kaplun and Yamini Bansal and Tristan Yang and Boaz Barak and Ilya Sutskever},
+	title = {Deep double descent: where bigger models and more data hurt{\ast}},
+	journal = {Journal of Statistical Mechanics: Theory and Experiment},
+	abstract = {We show that a variety of modern deep learning tasks exhibit a ‘double-descent’ phenomenon where, as we increase model size, performance first gets worse and then gets better. Moreover, we show that double descent occurs not just as a function of model size, but also as a function of the number of training epochs. We unify the above phenomena by defining a new complexity measure we call the effective model complexity and conjecture a generalized double descent with respect to this measure. Furthermore, our notion of model complexity allows us to identify certain regimes where increasing (even quadrupling) the number of train samples actually hurts test performance.}
+}
+
+
+@InProceedings{pmlr-v97-brutzkus19b,
+  title = 	 {Why do Larger Models Generalize Better? {A} Theoretical Perspective via the {XOR} Problem},
+  author =       {Brutzkus, Alon and Globerson, Amir},
+  booktitle = 	 {Proceedings of the 36th International Conference on Machine Learning},
+  pages = 	 {822--830},
+  year = 	 {2019},
+  editor = 	 {Chaudhuri, Kamalika and Salakhutdinov, Ruslan},
+  volume = 	 {97},
+  series = 	 {Proceedings of Machine Learning Research},
+  month = 	 {09--15 Jun},
+  publisher =    {PMLR},
+  pdf = 	 {http://proceedings.mlr.press/v97/brutzkus19b/brutzkus19b.pdf},
+  url = 	 {https://proceedings.mlr.press/v97/brutzkus19b.html},
+  abstract = 	 {Empirical evidence suggests that neural networks with ReLU activations generalize better with over-parameterization. However, there is currently no theoretical analysis that explains this observation. In this work, we provide theoretical and empirical evidence that, in certain cases, overparameterized convolutional networks generalize better than small networks because of an interplay between weight clustering and feature exploration at initialization. We demonstrate this theoretically for a 3-layer convolutional neural network with max-pooling, in a novel setting which extends the XOR problem. We show that this interplay implies that with overparamterization, gradient descent converges to global minima with better generalization performance compared to global minima of small networks. Empirically, we demonstrate these phenomena for a 3-layer convolutional neural network in the MNIST task.}
+}
+
+@article{l2_regularization_double_descent,
+  author    = {Preetum Nakkiran and
+               Prayaag Venkat and
+               Sham M. Kakade and
+               Tengyu Ma},
+  title     = {Optimal Regularization Can Mitigate Double Descent},
+  journal   = {CoRR},
+  volume    = {abs/2003.01897},
+  year      = {2020},
+  url       = {https://arxiv.org/abs/2003.01897},
+  eprinttype = {arXiv},
+  eprint    = {2003.01897},
+  timestamp = {Sun, 08 Aug 2021 16:40:51 +0200},
+  biburl    = {https://dblp.org/rec/journals/corr/abs-2003-01897.bib},
+  bibsource = {dblp computer science bibliography, https://dblp.org}
+}
+
+
+@InProceedings{pmlr-v119-d-ascoli20a,
+  title = 	 {Double Trouble in Double Descent: Bias and Variance(s) in the Lazy Regime},
+  author =       {D'Ascoli, St{\'e}phane and Refinetti, Maria and Biroli, Giulio and Krzakala, Florent},
+  booktitle = 	 {Proceedings of the 37th International Conference on Machine Learning},
+  pages = 	 {2280--2290},
+  year = 	 {2020},
+  editor = 	 {III, Hal Daumé and Singh, Aarti},
+  volume = 	 {119},
+  series = 	 {Proceedings of Machine Learning Research},
+  month = 	 {13--18 Jul},
+  publisher =    {PMLR},
+  pdf = 	 {http://proceedings.mlr.press/v119/d-ascoli20a/d-ascoli20a.pdf},
+  url = 	 {https://proceedings.mlr.press/v119/d-ascoli20a.html},
+  abstract = 	 {Deep neural networks can achieve remarkable generalization performances while interpolating the training data. Rather than the U-curve emblematic of the bias-variance trade-off, their test error often follows a "double descent"—a mark of the beneficial role of overparametrization. In this work, we develop a quantitative theory for this phenomenon in the so-called lazy learning regime of neural networks, by considering the problem of learning a high-dimensional function with random features regression. We obtain a precise asymptotic expression for the bias-variance decomposition of the test error, and show that the bias displays a phase transition at the interpolation threshold, beyond it which it remains constant. We disentangle the variances stemming from the sampling of the dataset, from the additive noise corrupting the labels, and from the initialization of the weights. We demonstrate that the latter two contributions are the crux of the double descent: they lead to the overfitting peak at the interpolation threshold and to the decay of the test error upon overparametrization. We quantify how they are suppressed by ensembling the outputs of $K$ independently initialized estimators. For $K\rightarrow \infty$, the test error is monotonously decreasing and remains constant beyond the interpolation threshold. We further compare the effects of overparametrizing, ensembling and regularizing. Finally, we present numerical experiments on classic deep learning setups to show that our results hold qualitatively in realistic lazy learning scenarios.}
+}
+
+@article{Two Models of Double Descent for Weak Features,
+author = {Belkin, Mikhail and Hsu, Daniel and Xu, Ji},
+title = {Two Models of Double Descent for Weak Features},
+journal = {SIAM Journal on Mathematics of Data Science},
+volume = {2},
+number = {4},
+pages = {1167-1180},
+year = {2020},
+doi = {10.1137/20M1336072},
+
+URL = { 
+        https://doi.org/10.1137/20M1336072
+    
+},
+eprint = { 
+        https://doi.org/10.1137/20M1336072
+    
+},
+    abstract = { The “double descent” risk curve was proposed to qualitatively describe the out-of-sample prediction accuracy of variably parameterized machine learning models. This article provides a precise mathematical analysis for the shape of this curve in two simple data models with the least squares/least norm predictor. Specifically, it is shown that the risk peaks when the number of features \$p\$ is close to the sample size \$n\$ but also that the risk sometimes decreases toward its minimum as \$p\$ increases beyond \$n\$. This behavior parallels some key patterns observed in large models, including modern neural networks, and is contrasted with that of “prescient” models that select features in an a priori optimal order. }
+}
+
+
+
+@article{Vallet_1989,
+	doi = {10.1209/0295-5075/9/4/003},
+	url = {https://doi.org/10.1209/0295-5075/9/4/003},
+	year = 1989,
+	month = {jun},
+	publisher = {{IOP} Publishing},
+	volume = {9},
+	number = {4},
+	pages = {315--320},
+	author = {F Vallet and J.-G Cailton and Ph Refregier},
+	title = {Linear and Nonlinear Extension of the Pseudo-Inverse Solution for Learning Boolean Functions},
+	journal = {Europhysics Letters ({EPL})},
+	abstract = {We consider in this letter the pseudo-inverse solution for the learning of a binary classification. We address the problem of overfitting, i.e. the fact that the generalization rate can be relatively low although the learning rate is very high. We interpret this phenomenon with respect to the behaviour of the small eigenvalues of the covariance matrix of the learned patterns. We propose two ways for solving this problem: the first one is linear, the second one is a two-layer perceptron. Numerical simulations are given to illustrate these approaches.}
+}
+
+
+@article{weak_features_belkin,
+  author    = {Mikhail Belkin and
+               Daniel Hsu and
+               Ji Xu},
+  title     = {Two models of double descent for weak features},
+  journal   = {CoRR},
+  volume    = {abs/1903.07571},
+  year      = {2019},
+  url       = {http://arxiv.org/abs/1903.07571},
+  eprinttype = {arXiv},
+  eprint    = {1903.07571},
+  timestamp = {Mon, 01 Apr 2019 14:07:37 +0200},
+  biburl    = {https://dblp.org/rec/journals/corr/abs-1903-07571.bib},
+  bibsource = {dblp computer science bibliography, https://dblp.org}
+}
+
+
+@misc{sam_optimizer,
+  doi = {10.48550/ARXIV.2010.01412},
+  
+  url = {https://arxiv.org/abs/2010.01412},
+  
+  author = {Foret, Pierre and Kleiner, Ariel and Mobahi, Hossein and Neyshabur, Behnam},
+  
+  keywords = {Machine Learning (cs.LG), Machine Learning (stat.ML), FOS: Computer and information sciences, FOS: Computer and information sciences},
+  
+  title = {Sharpness-Aware Minimization for Efficiently Improving Generalization},
+  
+  publisher = {arXiv},
+  
+  year = {2020},
+  
+  copyright = {arXiv.org perpetual, non-exclusive license}
+}
+
+
+@misc{sharp_loss,
+  doi = {10.48550/ARXIV.1712.09913},
+  
+  url = {https://arxiv.org/abs/1712.09913},
+  
+  author = {Li, Hao and Xu, Zheng and Taylor, Gavin and Studer, Christoph and Goldstein, Tom},
+  
+  keywords = {Machine Learning (cs.LG), Computer Vision and Pattern Recognition (cs.CV), Machine Learning (stat.ML), FOS: Computer and information sciences, FOS: Computer and information sciences},
+  
+  title = {Visualizing the Loss Landscape of Neural Nets},
+  
+  publisher = {arXiv},
+  
+  year = {2017},
+  
+  copyright = {arXiv.org perpetual, non-exclusive license}
+}
+
+
+
+
+@misc{prehistory_double_descent,
+  doi = {10.48550/ARXIV.2004.04328},
+  
+  url = {https://arxiv.org/abs/2004.04328},
+  
+  author = {Loog, Marco and Viering, Tom and Mey, Alexander and Krijthe, Jesse H. and Tax, David M. J.},
+  
+  keywords = {Machine Learning (cs.LG), FOS: Computer and information sciences, FOS: Computer and information sciences},
+  
+  title = {A Brief Prehistory of Double Descent},
+  
+  publisher = {arXiv},
+  
+  year = {2020},
+  
+  copyright = {arXiv.org perpetual, non-exclusive license}
+}
+
+
+
+
+@inproceedings{A_least_squre_study,
+ author = {Kuzborskij, Ilja and Szepesvari, Csaba and Rivasplata, Omar and Rannen-Triki, Amal and Pascanu, Razvan},
+ booktitle = {Advances in Neural Information Processing Systems},
+ editor = {M. Ranzato and A. Beygelzimer and Y. Dauphin and P.S. Liang and J. Wortman Vaughan},
+ pages = {29567--29577},
+ publisher = {Curran Associates, Inc.},
+ title = {On the Role of Optimization in Double Descent: A Least Squares Study},
+ url = {https://proceedings.neurips.cc/paper/2021/file/f754186469a933256d7d64095e963594-Paper.pdf},
+ volume = {34},
+ year = {2021}
+}
+
+@article{lottery_ticket,
+  doi = {10.48550/ARXIV.1803.03635},
+  
+  url = {https://arxiv.org/abs/1803.03635},
+  
+  author = {Frankle, Jonathan and Carbin, Michael},
+  
+  keywords = {Machine Learning (cs.LG), Artificial Intelligence (cs.AI), Neural and Evolutionary Computing (cs.NE), FOS: Computer and information sciences, FOS: Computer and information sciences},
+  
+  title = {The Lottery Ticket Hypothesis: Finding Sparse, Trainable Neural Networks},
+  
+  publisher = {arXiv},
+  
+  year = {2018},
+  
+  copyright = {arXiv.org perpetual, non-exclusive license}
+}
+
+
+@inproceedings{RF-model,
+author = {Rahimi, Ali and Recht, Benjamin},
+title = {Random Features for Large-Scale Kernel Machines},
+year = {2007},
+isbn = {9781605603520},
+publisher = {Curran Associates Inc.},
+address = {Red Hook, NY, USA},
+abstract = {To accelerate the training of kernel machines, we propose to map the input data to a randomized low-dimensional feature space and then apply existing fast linear methods. The features are designed so that the inner products of the transformed data are approximately equal to those in the feature space of a user specified shift-invariant kernel. We explore two sets of random features, provide convergence bounds on their ability to approximate various radial basis kernels, and show that in large-scale classification and regression tasks linear machine learning algorithms applied to these features outperform state-of-the-art large-scale kernel machines.},
+booktitle = {Proceedings of the 20th International Conference on Neural Information Processing Systems},
+pages = {1177–1184},
+numpages = {8},
+location = {Vancouver, British Columbia, Canada},
+series = {NIPS'07}
+}
+
+@misc{bias_variance_op,
+  doi = {10.48550/ARXIV.2002.11328},
+  
+  url = {https://arxiv.org/abs/2002.11328},
+  
+  author = {Yang, Zitong and Yu, Yaodong and You, Chong and Steinhardt, Jacob and Ma, Yi},
+  
+  keywords = {Machine Learning (cs.LG), Machine Learning (stat.ML), FOS: Computer and information sciences, FOS: Computer and information sciences},
+  
+  title = {Rethinking Bias-Variance Trade-off for Generalization of Neural Networks},
+  
+  publisher = {arXiv},
+  
+  year = {2020},
+  
+  copyright = {arXiv.org perpetual, non-exclusive license}
+}
+
+
+
+@misc{Bergman,
+  doi = {10.48550/ARXIV.2202.04167},
+  
+  url = {https://arxiv.org/abs/2202.04167},
+  
+  author = {Adlam, Ben and Gupta, Neha and Mariet, Zelda and Smith, Jamie},
+  
+  keywords = {Machine Learning (stat.ML), Machine Learning (cs.LG), Probability (math.PR), FOS: Computer and information sciences, FOS: Computer and information sciences, FOS: Mathematics, FOS: Mathematics},
+  
+  title = {Understanding the bias-variance tradeoff of Bregman divergences},
+  
+  publisher = {arXiv},
+  
+  year = {2022},
+  
+  copyright = {Creative Commons Attribution 4.0 International}
+}
+
+
+
+
+
+
+
+
+
+
+
+%Websites
+
+@misc{double_descent_2021_splines, title={Double descent 2}, url={https://mlu-explain.github.io/double-descent2/}, journal={DOUBLE DESCENT}, publisher={Brent Werness, Jared Wilber}, year={2021}, month={Dec}} 
+
+@misc{wikipedia_bias_variance, title={Bias–variance tradeoff}, url={https://en.wikipedia.org/wiki/Bias\%E2\%8\%93variance_tradeoff}, journal={Wikipedia}, publisher={Wikimedia Foundation}, year={2022}, month={Apr}} 
+
+@misc{Artificial_neural_network, title={Artificial neural network}, url={https://en.wikipedia.org/wiki/Artificial_neural_network}, journal={Wikipedia}, p
+ublisher={Wikimedia Foundation}} 
+
+
+@misc{wikipedia_Machine_learning, title={Machine learning}, url={https://en.wikipedia.org/wiki/Machine_learning}, journal={Wikipedia}, publisher={Wikimedia Foundation}, year={2022}, month={Apr}} 
+
+@misc{romero_2021_tw_ds, title={GPT-3 - A complete overview}, url={https://towardsdatascience.com/gpt-3-a-complete-overview-190232eb25fd}, journal={Medium}, publisher={Towards Data Science}, author={Romero, Alberto}, year={2021}, month={May}} 
+
+ @misc{wikipedia_Mnist-Datenbank, title={Mnist-Datenbank}, url={https://de.wikipedia.org/wiki/MNIST-Datenbank}, journal={Wikipedia}, publisher={Wikimedia Foundation}, year={2021}, month={Jul}} 
+
+
+ @misc{understanding_double_ticket, title={Understanding "deep double descent"}, url={https://www.lesswrong.com/posts/FRv7ryoqtvSuqBxuT/understanding-deep-double-descent}, journal={LessWrong}} 
+ 
+ @misc{reconciling modern machine-learning practice and the classical, title={Understanding "deep double descent"} url={https://www.pnas.org/doi/10.1073/pnas.1903070116}} 
+  
+ @misc{wikipedia_inductiv_bias, title={Inductive bias}, url={https://en.wikipedia.org/wiki/Inductive_bias}, journal={Wikipedia}, publisher={Wikimedia Foundation}}
+
+  @misc{wine_data, title={wine data set}, url={https://archive.ics.uci.edu/ml/datasets/wine}, publisher={UCI}}
+
+
+ @misc{regularization_L1_L2, title={L1 and L2 regularization methods}, url={https://towardsdatascience.com/l1-and-l2-regularization-methods-ce25e7fc831c}, journal={Medium}, publisher={Towards Data Science}, author={Nagpal, Anuja}, year={2017}, month={Oct}} 
+
+
+
+@misc{dd_analysis,
+  doi = {10.48550/ARXIV.1908.05355},
+  
+  url = {https://arxiv.org/abs/1908.05355},
+  
+  author = {Mei, Song and Montanari, Andrea},
+  
+  keywords = {Statistics Theory (math.ST), Machine Learning (stat.ML), FOS: Mathematics, FOS: Mathematics, FOS: Computer and information sciences, FOS: Computer and information sciences, 62J99},
+  
+  title = {The generalization error of random features regression: Precise asymptotics and double descent curve},
+  
+  publisher = {arXiv},
+  
+  year = {2019},
+  
+  copyright = {arXiv.org perpetual, non-exclusive license}
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+@Comment{jabref-meta: databaseType:bibtex;}
